@@ -4,14 +4,19 @@
   "description": "E-Library Project",
   "main": "index.js",
   "scripts": {
+    "dev": "nodemon server.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Bishal Paudel <bishalpaudel1998@gmail.com>",
   "license": "ISC",
   "devDependencies": {
+    "@eslint/js": "^9.1.1",
     "@types/node": "^20.12.7",
+    "eslint": "^8.57.0",
+    "globals": "^15.1.0",
     "nodemon": "^3.1.0",
     "ts-node": "^10.9.2",
-    "typescript": "^5.4.5"
+    "typescript": "^5.4.5",
+    "typescript-eslint": "^7.7.1"
   }
 }
