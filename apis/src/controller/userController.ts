@@ -36,10 +36,48 @@ const createUser = async (req: Request, res: Response, next: NextFunction) => {
     });
 
     // response
-    res.json({ message: "User Registered Successfully", accessToken: token });
+    res
+      .status(201)
+      .json({ message: "User Registered Successfully", accessToken: token });
   } catch (error) {
     return next(createHttpError(500, "Error creating user"));
   }
 };
 
-export { createUser };
+const loginUser = async (req: Request, res: Response, next: NextFunction) => {
+  //get login data
+  const { email, password } = req.body;
+
+  //validation
+  if (!email || !password) {
+    return next(createHttpError(400, "All fields are required"));
+  }
+  try {
+    //check user exists
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return next(createHttpError(400, "User not found"));
+    }
+
+    //compare password
+    const passwordCheck = await bcrypt.compare(password, user.password);
+
+    if (!passwordCheck) {
+      return next(createHttpError(400, "Password is incorrect"));
+    }
+
+    // create access token
+
+    const token = sign({ sub: user._id }, config.jwtSecret as string, {
+      expiresIn: "7d",
+    });
+
+    //response
+    res.json({ message: "User Logged in successfully", accessToken: token });
+  } catch (error) {
+    return next(createHttpError(500, "Error while Log in the User"));
+  }
+};
+
+export { createUser, loginUser };
