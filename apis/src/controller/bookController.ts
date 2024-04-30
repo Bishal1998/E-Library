@@ -49,7 +49,7 @@ const createBook = async (req: Request, res: Response, next: NextFunction) => {
 
     const newBook = new Book({
       title,
-      author: "test",
+      author: "66307e1031f0a28631bd56f9",
       genre,
       description,
       coverImage: uploadResult.secure_url,
