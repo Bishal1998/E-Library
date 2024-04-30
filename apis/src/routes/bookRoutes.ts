@@ -5,6 +5,6 @@ const bookRoutes = express.Router();
 
 //routes
 
-bookRoutes.route("/register").post(createBook);
+bookRoutes.route("/").post(createBook);
 
 export default bookRoutes;
