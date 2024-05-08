@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import createHttpError from "http-errors";
 import cloudinary from "../config/cloudinary";
 import path from "node:path";
+import fs from "node:fs";
 import Book from "../models/bookModel";
 
 const createBook = async (req: Request, res: Response, next: NextFunction) => {
@@ -56,9 +57,14 @@ const createBook = async (req: Request, res: Response, next: NextFunction) => {
       file: bookFileUploadResult.secure_url,
     });
 
+    // delete temporary files
+
+    await fs.promises.unlink(filePath);
+    await fs.promises.unlink(bookFilePath);
+
     await newBook.save();
 
-    res.json({ message: "Book created" });
+    res.status(201).json({ message: "Book created", id: newBook._id });
   } catch (error) {
     return next(createHttpError(500, "Unable to Create Book"));
   }
